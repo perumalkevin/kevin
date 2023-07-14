@@ -1,80 +1,75 @@
-let skipButton = document.getElementById('skip');
-let score = document.querySelector('#score');
-let totalScore= document.getElementById('totalScore');
-let countdown = document.querySelector('#countdown');
-let playButton = document.getElementById('Play');
-let homeButton = document.getElementById('Home');
-let count = 0;
-let scoreCount = 0;
-let duration = 0;
-let qaSet = document.querySelectorAll('.qa_set');
-let qaAnsRow = document.querySelectorAll('.qa_set .qa_ans_row input')
+// This array will store our whole order
+let cart = [ {Name: 'Apple', Price: 30} ]; // this is an array with an object within 
+
+let total = 10;
+
+let cartList = document.querySelector('#cart_list')
 
 
-skipButton.addEventListener('click', function(){
-    step();
-    duration = 10;
-})
+function addToCart(item, price) {
+    let menuItem = new Food (item, price); // this assigns a new FOOD CLASS
+
+    menuItem.disply(); // this calls the Display METHOD for the THIS which is FOOD class
+
+    menuItem.upDateTotal(); // this updates the total as shown in the FOOD CLASS by calling the method to the menuItem
+
+    menuItem.showOnCart();
+
+    slip.addItem(  {Name: 'fruit', Price: 10}  )
+
+    slip.printSlip();
 
 
-qaAnsRow.forEach( function(qaAnsRowSingle) {
-    qaAnsRowSingle.addEventListener('click', function(){
-        setTimeout(function(){
-           step();
-           duration = 10;
-        }, 500)
 
-        let valid = this.getAttribute("valid");
-
-        if(valid == "valid"){
-            scoreCount +=20;
-            score.innerHTML = scoreCount; 
-            totalScore.innerHTML = scoreCount; 
-        }else{
-            scoreCount -=20;
-            score.innerHTML = scoreCount; 
-            totalScore.innerHTML = scoreCount; 
-        }
-    
-    })
-} )
-
-function step(){
-    count += 1;
-
-    for(let i = 0; i < qaSet.length; i++){
-        qaSet[i].className= 'qa_set';
-    }
-
-    qaSet[count].className = 'qa_set active';
-
-
-    if(count === 3){
-        skipButton.style.display = 'none';
-        clearInterval(durationTime);
-        countdown.innerHTML = 0;
-        playButton.style.display = 'inline-block';
-        homeButton.style.display = 'inline-block';
-    }
 }
 
-let durationTime = setInterval(function(){
-    if(duration == 10){
-    duration = 0
- }
-
-    duration += 1;
-    countdown.innerHTML = duration;
-    if(countdown.innerHTML == '10'){
-        step()
+//This is an object with methods within 
+class Food {
+    constructor(item, price){
+        this.item = item;      // NOTE that the THIS tag represent the obeject name which Food
+        this.price = price;
     }
 
-    if (count === 3) {
-        clearInterval(durationTime);
-        countdown.innerHTML = 0;
+//this is a method just like a function but without the function keyword
 
+    disply(){
+        console.log(this);  //NOTE the THIS represent the object name whic is FOOD 
     }
 
+//this is also a method again NOTE we dont add the function keyword
+
+    upDateTotal(){
+        total = total + this.price;
+
+        console.log(total);
+    }
+
+    
+    showOnCart(){
+        cartList.innerHTML += `<li> ${this.item} - ${this.price} </li>`  // the innerHTML allows you to add another li to the cartList from the HTML
+    }
+    
+}
+let items = [];
+
+class checkOutSlip{ 
+        addItem(itemsToAdd){
+            cart.push(itemsToAdd);
+                } // This line defines the addItem method of the checkOutSlip class. It adds the itemsToAdd object to the cart array.
 
 
-}, 1000);
+                
+            printSlip (){
+                cart.map((current) => {
+                    document.querySelector('.checkoutSlip').innerHTML += `<li> ${current.Name} - ${current.Price} </li>`
+                })
+            }
+            }
+        
+
+
+const slip = new checkOutSlip();
+
+
+
+
